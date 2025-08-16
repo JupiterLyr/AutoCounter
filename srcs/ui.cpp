@@ -16,7 +16,6 @@ namespace Ui {
 
         mainWindow->setWindowTitle("Auto Counter");
         QString iconPath = QDir(QCoreApplication::applicationDirPath()).filePath("resource/icon.png");
-        std::cout << iconPath.toStdString() << std::endl;
         if (QFileInfo::exists(iconPath))
             mainWindow->setWindowIcon(QIcon(iconPath));
         else

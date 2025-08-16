@@ -13,7 +13,10 @@ You can contact me through ***Github Private Message***. The email address is no
 ---
 
 # Update Log
-## Version 1.1</br>2025-08-15 16:45
+## Version 1.2.0</br>2025-08-16 14:30
++ Made a configuration for the application icon with `icon_config.rc`.
+
+## Version 1.1</br>2025-08-15 16:40
 **Now this application can be used normally!**
 + User input data validation is added.
 + Start-stop control and counting logic have been configured.

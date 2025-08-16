@@ -10,9 +10,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-
 # 设置 Qt 的安装目录
 set(CMAKE_PREFIX_PATH "D:/Qt/6.9.1/mingw_64/lib/cmake")
 
@@ -23,8 +20,10 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 include_directories(${PROJECT_SOURCE_DIR}/includes)
 # 添加源文件
 aux_source_directory(${PROJECT_SOURCE_DIR}/srcs SRC_FILES)
+# 其他配置文件
+set(RC_FILES ${PROJECT_SOURCE_DIR}/icon_config.rc)
 # 添加可执行文件
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${RC_FILES})
 
 # 链接 Qt 库
 target_link_libraries(
@@ -40,4 +39,30 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMENT "Copying resource/ to $<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
 
-qt_finalize_executable(auto_counter)
+# # ==================== 安装规则 ====================
+# # 1. 设定安装目录
+# set(CMAKE_INSTALL_PREFIX "Release" CACHE PATH "")
+
+# # 2. 安装规则
+# install(TARGETS ${PROJECT_NAME}
+#         RUNTIME DESTINATION .)
+# install(DIRECTORY resource
+#         DESTINATION .)
+
+# # 3. Qt 官方提供的自动拷贝运行时库/插件
+# #    需要 CMake ≥ 3.14，Qt ≥ 5.14
+# include(GNUInstallDirs)
+# qt_generate_deploy_app_script(
+#     TARGET ${PROJECT_NAME}
+#     OUTPUT_SCRIPT deploy_script.cmake
+#     NO_UNSUPPORTED_PLATFORM_ERROR
+# )
+
+# install(SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/deploy_script.cmake")
+
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} --install . --config $<CONFIG>
+#     COMMENT "Installing ${PROJECT_NAME} to ${CMAKE_INSTALL_PREFIX}"
+# )
+
+qt_finalize_executable(${PROJECT_NAME})
