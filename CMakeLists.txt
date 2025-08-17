@@ -11,9 +11,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 设置 Qt 的安装目录
-set(CMAKE_PREFIX_PATH "D:/Qt/6.9.1/mingw_64/lib/cmake")
+set(CMAKE_PREFIX_PATH "D:/ProgramData/Qt/6.9.1/mingw_64/lib/cmake")
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 # 设置头文件目录
@@ -32,37 +32,67 @@ target_link_libraries(
     Qt${QT_VERSION_MAJOR}::Widgets
 )
 
+# 复制 resource 文件夹
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     # 一次性拷贝整个 resource
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#             "${CMAKE_CURRENT_SOURCE_DIR}/resource"
+#             "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resource"
+#     COMMENT "Copying resource/ to $<TARGET_FILE_DIR:${PROJECT_NAME}>"
+# )
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_CURRENT_SOURCE_DIR}/resource"
+    # 确保目标目录存在
+    COMMAND ${CMAKE_COMMAND} -E make_directory
             "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resource"
-    COMMENT "Copying resource/ to $<TARGET_FILE_DIR:${PROJECT_NAME}>"
+    # 逐个拷贝需要的文件
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/resource/icon.ico"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resource/icon.ico"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/resource/icon.png"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resource/icon.png"
+
+    COMMENT "Copying icon.ico & icon.png to $<TARGET_FILE_DIR:${PROJECT_NAME}>/resource"
 )
 
-# # ==================== 安装规则 ====================
-# # 1. 设定安装目录
-# set(CMAKE_INSTALL_PREFIX "Release" CACHE PATH "")
-
-# # 2. 安装规则
-# install(TARGETS ${PROJECT_NAME}
-#         RUNTIME DESTINATION .)
-# install(DIRECTORY resource
-#         DESTINATION .)
-
-# # 3. Qt 官方提供的自动拷贝运行时库/插件
-# #    需要 CMake ≥ 3.14，Qt ≥ 5.14
-# include(GNUInstallDirs)
-# qt_generate_deploy_app_script(
-#     TARGET ${PROJECT_NAME}
-#     OUTPUT_SCRIPT deploy_script.cmake
-#     NO_UNSUPPORTED_PLATFORM_ERROR
-# )
-
-# install(SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/deploy_script.cmake")
-
+# # 复制 bin 文件夹以补充缺失的 dll
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} --install . --config $<CONFIG>
-#     COMMENT "Installing ${PROJECT_NAME} to ${CMAKE_INSTALL_PREFIX}"
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#             "${CMAKE_CURRENT_SOURCE_DIR}/bin"
+#             "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+#     COMMENT "Copying DLL files from bin/ to build/Release"
 # )
+
+# ==================== 安装规则 ====================
+set(DEPLOY_DIR "${CMAKE_BINARY_DIR}/Release")   # build/Release
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${DEPLOY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${DEPLOY_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${DEPLOY_DIR}"
+)
+
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/qml"
+        DESTINATION "${DEPLOY_DIR}"
+        CONFIGURATIONS Release MinSizeRel RelWithDebInfo
+)
+
+# 找到 windeployqt 可执行文件
+get_target_property(_qmake_executable Qt6::qmake IMPORTED_LOCATION)
+get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+
+# 每次构建完成后自动运行 windeployqt
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E echo ">>> Running windeployqt..."
+    COMMAND "${WINDEPLOYQT_EXECUTABLE}"
+        #     --no-compiler-runtime   # 不自动拷 VC 运行库，想拷就去掉
+            --no-translations       # 不需要翻译包
+            --qmldir "${CMAKE_SOURCE_DIR}/qml"
+            "$<TARGET_FILE:${PROJECT_NAME}>"
+    WORKING_DIRECTORY "${DEPLOY_DIR}"
+    COMMENT "Deploying Qt dependencies..."
+    VERBATIM
+)
 
 qt_finalize_executable(${PROJECT_NAME})
