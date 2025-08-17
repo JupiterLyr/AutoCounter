@@ -5,7 +5,7 @@
 3. Click the **Start** button to make the counter run. At startup, it will be initialized to the minimum. When the value is higher than the maximum, it will be reset to the minimum.
 4. Click the **Stop** button when you want to stop the counter. The value will remain at the lastest statement when it stops.
 </br>
-![Software Interface](/resource/pic1.png)
+![Software Interface](https://github.com/Jupiterlyr/AutoCounter/raw/main/resource/pic1.png)
 
 ## Project Stucture
 ```txt
