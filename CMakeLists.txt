@@ -24,6 +24,9 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/srcs SRC_FILES)
 set(RC_FILES ${PROJECT_SOURCE_DIR}/icon_config.rc)
 # 添加可执行文件
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${RC_FILES})
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    WIN32_EXECUTABLE TRUE   # 不显示 CMD 窗口
+)
 
 # 链接 Qt 库
 target_link_libraries(

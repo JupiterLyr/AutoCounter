@@ -41,6 +41,9 @@ You can contact me through ***Github Private Message***. The email address is no
 ---
 
 # Update Log
+## Version 1.2.2</br>2025-08-20 16:45
++ Hidden the CMD window that pops up when the software is running.
+
 ## Version 1.2.1</br>2025-08-17 14:30
 **This version is available for release now!**
 + Fixed the problem of missing DLL for the `Release` software.
