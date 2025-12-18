@@ -16,6 +16,17 @@ AutoCounter
 ├── includes/
 │   ├── mainwindow.h
 │   └── ui.h
+├── installer/
+│   ├── config/
+│   │   └── config.xml          # configuration of the installer
+│   └── packages/
+│       └── com.jupiterlyr.autocounter/
+│           ├── data/
+│           │   ├── ...
+│           │   └── auto_counter.exe
+│           └── meta/
+│               ├── package.xml # description of the package
+│               └── installscript.qs
 ├── resource/
 │   ├── icon.ico
 │   ├── icon.png
@@ -35,28 +46,28 @@ AutoCounter
 2. Path `dist` stores the compressed package (e.g., `*.rar`, `*.zip`, etc.) of the released software, which is not included in the project.
 3. The application **can be downloaded in the "Release" section**.
 
-## Contact me
-You can contact me through ***Github Private Message***. The email address is not disclosed here because of privacy.</br>Looking forward to hearing your better suggestions!
+## Contact Me
+You can contact me through **jupiterlyr@gmail.com** for some suggestions. Looking forward to hearing your better suggestions!
 
 ---
 
 # Update Log
 ## Version 1.2.2</br>2025-08-20 16:45
-+ Hidden the CMD window that pops up when the software is running.
+- Hidden the CMD window that pops up when the software is running.
 
 ## Version 1.2.1</br>2025-08-17 14:30
 **This version is available for release now!**
-+ Fixed the problem of missing DLL for the `Release` software.
+- Fixed the problem of missing DLL for the `Release` software.
 
 ## Version 1.2.0</br>2025-08-16 14:30
-+ Made a configuration for the application icon with `icon_config.rc`.
+- Made a configuration for the application icon with `icon_config.rc`.
 
 ## Version 1.1</br>2025-08-15 16:40
 Now this application can be run through the compiler.
-+ User input data validation is added.
-+ Start-stop control and counting logic have been configured.
-+ Some bugs were fixed and some UI designs were optimized.
+- User input data validation is added.
+- Start-stop control and counting logic have been configured.
+- Some bugs were fixed and some UI designs were optimized.
 
 ## Initial Version 1.0</br>2025-08-15 10:50
-+ The basic UI design in `ui.cpp` is completed.
-+ The primary architecture of the `mainwindow.cpp` is given, in which TODO list is listed.
+- The basic UI design in `ui.cpp` is completed.
+- The primary architecture of the `mainwindow.cpp` is given, in which TODO list is listed.

@@ -1,4 +1,6 @@
 .vscode
 build
 dist
+installer/packages/com.jupiterlyr.autocounter/data/*
+installer/AutoCounter_Installer.exe
 resource/icon.psd
