@@ -8,7 +8,7 @@ set "APP_NAME=AutoCounter"
 set "PACKAGE_NAME=com.jupiterlyr.autocounter"
 set "BUILD_DIR=build\Release"
 set "INSTALLER_DIR=installer"
-set "OUTPUT_NAME=%INSTALLER_DIR%\%APP_NAME%_Installer.exe"
+set "OUTPUT_NAME=%INSTALLER_DIR%\%APP_NAME%_installer.exe"
 
 REM ¼ì²ébinarycreator
 where binarycreator >nul 2>nul

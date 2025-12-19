@@ -4,5 +4,11 @@
     <Version>1.2.2</Version>
     <Title>Auto Counter Installer</Title>
     <Publisher>JupiterLyr</Publisher>
-    <TargetDir>@HomeDir@/AutoCounter</TargetDir> <!-- 默认安装路径 -->
+    <TargetDir>@ApplicationsDirX64@/AutoCounter</TargetDir> <!-- 默认安装路径 -->
+
+    <WizardStyle>Modern</WizardStyle>
+    <WizardDefaultWidth>600</WizardDefaultWidth>
+    <WizardDefaultHeight>400</WizardDefaultHeight>
+    <WizardShowPageList>false</WizardShowPageList>
+    <StyleSheet>config/style.qss</StyleSheet>
 </Installer>

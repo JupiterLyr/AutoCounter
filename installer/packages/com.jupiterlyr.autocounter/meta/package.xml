@@ -2,7 +2,7 @@
 <Package>
     <DisplayName>Auto Counter</DisplayName>
     <Description>
-        Automatic counter software with settable frequency and adjustable counting range.
+        自动定频计数器软件，可以设定频率、调整上下限。
     </Description>
     <Version>1.2.2</Version>
     <ReleaseDate>2025-12-18</ReleaseDate>
